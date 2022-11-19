@@ -6,6 +6,17 @@ app.engine('.hbs', hbs());
 app.set('view engine', '.hbs');
 
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.post('/contact/send-message', (req, res) => {
+  const { author, sender, title, message, design } = req.body;
+  if(author && sender && title && message && design){
+    res.render('contact', { isSent: true, design });
+  } else {
+    res.render('contact', { isError: true });
+  };
+});
 
 app.get('/hello/:name', (req, res) => {
   res.render('hello', { name: req.params.name });
